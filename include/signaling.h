@@ -26,7 +26,7 @@ void master_task(void *args);
 void run_task(void);
 
 // Calc task to perform the calculation
-void calc_task(void *args);
+void calc_task(void *vargs);
 
 // Do calculation when a request has come in
 void signal_handle_calculation(SemaphoreHandle_t request, SemaphoreHandle_t response,

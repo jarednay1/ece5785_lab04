@@ -18,27 +18,31 @@ void run_task(void) {
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
     TaskHandle_t calc;
-    struct signal_data sig_data = {10, 0}; 
+    struct signal_data sig_data = {0, 0}; 
     struct task_args task_args = {request, response, &sig_data};
     int status;
 
-    xTaskCreate(calc_task, "CalcTask", WORKER_TASK_STACK_SIZE, &task_args, 
+    xTaskCreate(calc_task, "CalcTask", WORKER_TASK_STACK_SIZE, (void *) &task_args, 
                 WORKER_TASK_PRIORITY, &calc);
 
-    
-    vTaskDelay(1000);
-    status = signal_request_calculate(request, response, &sig_data);
-    vTaskDelay(1000);
-    printf("status: %d\n", status);
-    printf("output: %d\n", sig_data.output);
+    for (int i = 0; i < 3; i++) {
+        vTaskDelay(1000);
+        task_args.data->input = i;
+        status = signal_request_calculate(request, response, &sig_data);
+        printf("status: %d\n", status);
+        printf("output: %d\n", sig_data.output);
+
+    }
     vTaskDelete(calc);
 }
 
-void calc_task(void *args) {
-    
+void calc_task(void *vargs) {
+    struct task_args *task_args = (struct task_args *)vargs;
     // Task loop
     while(1) {
-        //signal_handle_calculation(request, response, &sig_data);
+        signal_handle_calculation(task_args->request, task_args->response, 
+                                    task_args->data);
+        //vTaskDelay(1000);
     }
 }
 // This is the worker thread. Waits for a request, increments data by 5, and signals
@@ -46,7 +50,7 @@ void calc_task(void *args) {
 void signal_handle_calculation(SemaphoreHandle_t request, SemaphoreHandle_t response,
                                struct signal_data *data) {
     // Wait for a request to come in
-    printf("Waiting for response\n");
+    printf("Waiting for request\n");
     xSemaphoreTake(request, portMAX_DELAY);
     data->output = data->input + 5;
     printf("Data calculated\n");
