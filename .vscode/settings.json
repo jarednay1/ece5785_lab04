@@ -39,6 +39,7 @@
     "raspberry-pi-pico.python3Path": "python3",
     "files.associations": {
         "stdlib.h": "c",
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "stdio.h": "c"
     }
 }

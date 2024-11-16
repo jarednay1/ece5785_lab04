@@ -5,24 +5,17 @@
 #include <unity.h>
 #include "signaling.h"
 
-#define TEST_TASK_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
-#define TEST_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
-#define TEST_RUNNER_PRIORITY      ( tskIDLE_PRIORITY + 2UL )
-#define TEST_RUNNER_STACK_SIZE configMINIMAL_STACK_SIZE
-
 void setUp(void) {}
 
 void tearDown(void) {}
 
-struct task_args
-{
+struct task_args {
     SemaphoreHandle_t request;
     SemaphoreHandle_t response;
     struct signal_data *data;
 };
 
-void calc_task(void *vargs)
-{
+void calc_task(void *vargs) {
     struct task_args *args = (struct task_args *)vargs;
     while(1) {
         signal_handle_calculation(args->request,
@@ -32,8 +25,7 @@ void calc_task(void *vargs)
     vTaskDelete(NULL);
 }
 
-void test_request(void)
-{
+void test_request(void) {
     TaskHandle_t coop_thread;
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
@@ -53,8 +45,7 @@ void test_request(void)
     vSemaphoreDelete(response);
 }
 
-void test_noone_home(void)
-{
+void test_noone_home(void) {
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     struct signal_data data = {42, 42};
@@ -69,8 +60,7 @@ void test_noone_home(void)
     vSemaphoreDelete(response);
 }
 
-void test_noop(void)
-{
+void test_noop(void) {
     TaskHandle_t coop_thread;
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
@@ -89,8 +79,7 @@ void test_noop(void)
 }
 
 
-void test_out_of_order(void)
-{
+void test_out_of_order(void) {
     TaskHandle_t coop_thread;
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
@@ -109,8 +98,7 @@ void test_out_of_order(void)
     vSemaphoreDelete(response);
 }
 
-void runner_thread (__unused void *args)
-{
+void runner_thread (__unused void *args) {
     for (;;) {
         printf("Starting test run.\n");
         UNITY_BEGIN();
@@ -123,8 +111,7 @@ void runner_thread (__unused void *args)
     }
 }
 
-int main (void)
-{
+int main (void) {
     stdio_init_all();
     printf("Launching runner\n");
     hard_assert(cyw43_arch_init() == PICO_OK);
