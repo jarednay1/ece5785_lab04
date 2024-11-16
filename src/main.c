@@ -20,9 +20,11 @@ int main( void )
     stdio_init_all();
     const char *rtos_name;
     rtos_name = "FreeRTOS";
-    TaskHandle_t task;
-    xTaskCreate(master_thread, "TMasterhread",
-                MASTER_TASK_STACK_SIZE, NULL, MASTER_TASK_PRIORITY, &task);
+    TaskHandle_t master;
+    sleep_ms(10000);
+    printf("made it after sleep\n");
+    xTaskCreate(master_task, "MasterTask", MASTER_TASK_STACK_SIZE, NULL,
+                MASTER_TASK_PRIORITY, &master);
     vTaskStartScheduler();
     return 0;
 }

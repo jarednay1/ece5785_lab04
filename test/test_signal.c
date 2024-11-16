@@ -5,6 +5,11 @@
 #include <unity.h>
 #include "signaling.h"
 
+#define TEST_TASK_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
+#define TEST_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
+#define TEST_RUNNER_PRIORITY      ( tskIDLE_PRIORITY + 2UL )
+#define TEST_RUNNER_STACK_SIZE configMINIMAL_STACK_SIZE
+
 void setUp(void) {}
 
 void tearDown(void) {}
