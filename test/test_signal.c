@@ -14,21 +14,15 @@ void setUp(void) {}
 
 void tearDown(void) {}
 
-struct task_args {
-    SemaphoreHandle_t request;
-    SemaphoreHandle_t response;
-    struct signal_data *data;
-};
-
-void calc_task(void *vargs) {
-    struct task_args *args = (struct task_args *)vargs;
-    while(1) {
-        signal_handle_calculation(args->request,
-                                  args->response,
-                                  args->data);
-    }
-    vTaskDelete(NULL);
-}
+// void calc_task(void *vargs) {
+//     struct task_args *args = (struct task_args *)vargs;
+//     while(1) {
+//         signal_handle_calculation(args->request,
+//                                   args->response,
+//                                   args->data);
+//     }
+//     vTaskDelete(NULL);
+// }
 
 void test_request(void) {
     TaskHandle_t coop_thread;
@@ -120,6 +114,7 @@ int main (void) {
     stdio_init_all();
     printf("Launching runner\n");
     hard_assert(cyw43_arch_init() == PICO_OK);
+    sleep_ms(10000);
     xTaskCreate(runner_thread, "TestRunner",
                 TEST_RUNNER_STACK_SIZE, NULL, TEST_RUNNER_PRIORITY, NULL);
     vTaskStartScheduler();
