@@ -24,7 +24,8 @@ int main( void )
     sleep_ms(10000);
     printf("made it after sleep\n");
     xTaskCreate(master_task, "MasterTask", MASTER_TASK_STACK_SIZE, NULL,
-                MASTER_TASK_PRIORITY, &master);
+                 MASTER_TASK_PRIORITY, &master);
     vTaskStartScheduler();
+    run_task();
     return 0;
 }
