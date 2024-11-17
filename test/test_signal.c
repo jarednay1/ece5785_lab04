@@ -14,23 +14,13 @@ void setUp(void) {}
 
 void tearDown(void) {}
 
-// void calc_task(void *vargs) {
-//     struct task_args *args = (struct task_args *)vargs;
-//     while(1) {
-//         signal_handle_calculation(args->request,
-//                                   args->response,
-//                                   args->data);
-//     }
-//     vTaskDelete(NULL);
-// }
-
 void test_request(void) {
     TaskHandle_t coop_thread;
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
 
     struct signal_data data = {};
-    struct task_args args = {request, response, &data};
+    struct calc_task_args args = {request, response, &data};
     xTaskCreate(calc_task, "test_request", TEST_TASK_STACK_SIZE,
                 (void *)&args, TEST_TASK_PRIORITY, &coop_thread);
     for (int counter = 46; counter < 55; counter++) {
@@ -48,7 +38,7 @@ void test_noone_home(void) {
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     struct signal_data data = {42, 42};
-    struct task_args args = {request, response, &data};
+    struct calc_task_args args = {request, response, &data};
     BaseType_t result = signal_request_calculate(request, response, &data);
     TEST_ASSERT_EQUAL_INT(pdFALSE, result);
     TEST_ASSERT_EQUAL_INT(1, uxSemaphoreGetCount(request));
@@ -64,7 +54,7 @@ void test_noop(void) {
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
     struct signal_data data = {42, 42};
-    struct task_args args = {request, response, &data};
+    struct calc_task_args args = {request, response, &data};
     xTaskCreate(calc_task, "test_noop", TEST_TASK_STACK_SIZE,
                 (void *)&args, TEST_TASK_PRIORITY, &coop_thread);
     vTaskDelay(1000);
@@ -83,7 +73,7 @@ void test_out_of_order(void) {
     SemaphoreHandle_t request = xSemaphoreCreateCounting(1, 0);
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
     struct signal_data data = {42, 42};
-    struct task_args args = {request, response, &data};
+    struct calc_task_args args = {request, response, &data};
     xTaskCreate(calc_task, "test_out_of_order", TEST_TASK_STACK_SIZE,
                 (void *)&args, TEST_TASK_PRIORITY, &coop_thread);
     xSemaphoreGive(response);

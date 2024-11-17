@@ -13,7 +13,7 @@ struct signal_data {
     int32_t output;
 };
 
-struct task_args {
+struct calc_task_args {
     SemaphoreHandle_t request;
     SemaphoreHandle_t response;
     struct signal_data *data;

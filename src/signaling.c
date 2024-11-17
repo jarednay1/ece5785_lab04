@@ -19,7 +19,7 @@ void run_task(void) {
     SemaphoreHandle_t response = xSemaphoreCreateCounting(1, 0);
     TaskHandle_t calc;
     struct signal_data sig_data = {0, 0}; 
-    struct task_args task_args = {request, response, &sig_data};
+    struct calc_task_args task_args = {request, response, &sig_data};
     int status;
 
     xTaskCreate(calc_task, "CalcTask", WORKER_TASK_STACK_SIZE, (void *) &task_args, 
@@ -37,12 +37,11 @@ void run_task(void) {
 }
 
 void calc_task(void *vargs) {
-    struct task_args *task_args = (struct task_args *)vargs;
+    struct calc_task_args *task_args = (struct calc_task_args *)vargs;
     // Task loop
     while(1) {
         signal_handle_calculation(task_args->request, task_args->response, 
                                     task_args->data);
-        //vTaskDelay(1000);
     }
 }
 // This is the worker thread. Waits for a request, increments data by 5, and signals
