@@ -23,6 +23,7 @@ int main( void )
     TaskHandle_t master;
     sleep_ms(10000);
     printf("made it after sleep\n");
+    hard_assert(cyw43_arch_init() == PICO_OK);
     xTaskCreate(master_task, "MasterTask", MASTER_TASK_STACK_SIZE, NULL,
                  MASTER_TASK_PRIORITY, &master);
     vTaskStartScheduler();
