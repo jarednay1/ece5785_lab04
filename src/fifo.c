@@ -6,12 +6,12 @@
 #include "fifo.h"
 #include "signaling.h"
 
-int setup_pool;
+// int setup_pool;
 
-TaskHandle_t worker_threads[THREAD_COUNT];
-struct task_args worker_args[THREAD_COUNT];
-QueueHandle_t request;
-QueueHandle_t response;
+// TaskHandle_t worker_threads[THREAD_COUNT];
+// struct task_args worker_args[THREAD_COUNT];
+// QueueHandle_t request;
+// QueueHandle_t response;
 
 // Wrapper for worker task to be called. Was included in Ashton's test solution
 // So I'ma keep it
@@ -20,26 +20,28 @@ void handler_task(void *vargs) {
     fifo_worker_handler(args->request, args->response, args->id);
 }
 
-void fifo_master_task(void *args) {
-    struct request_msg responses[THREAD_COUNT]; 
-    int count = 0;
-    setup_pool = 1;
-    setUp();
-    run_fifo_task();
+// Master task, commented out for now cause I don't know how to only build
+// one executable at a time.
+// void fifo_master_task(void *args) {
+//     struct request_msg responses[THREAD_COUNT]; 
+//     int count = 0;
+//     setup_pool = 1;
+//     setUp();
+//     run_fifo_task();
 
-    while (1) {
-        if (xQueueReceive(response, (&responses + count), portMAX_DELAY)) {
-            printf("Output: %d\n", responses[count].output);
-        }
+//     while (1) {
+//         if (xQueueReceive(response, (&responses + count), portMAX_DELAY)) {
+//             printf("Output: %d\n", responses[count].output);
+//         }
 
-        // Kill the master
-        if (!setup_pool) {
-            vTaskDelete(NULL);
-        }
-    }
-}
+//         // Kill the master
+//         if (!setup_pool) {
+//             vTaskDelete(NULL);
+//         }
+//     }
+// }
 
-
+// Workers wait here to receive a message
 void fifo_worker_handler(QueueHandle_t requests, QueueHandle_t results, int id) {
     struct request_msg msg = {};
     while(1) {
@@ -51,6 +53,7 @@ void fifo_worker_handler(QueueHandle_t requests, QueueHandle_t results, int id) 
     }
 }
 
+// Helper for master thread to create inputs
 void run_fifo_task(void) {
     for (int i = 0; i < 4; i++) {
         struct request_msg msg = {};
@@ -59,6 +62,7 @@ void run_fifo_task(void) {
     }
 }
 
+// Set up worker threads
 void setUp(void)
 {
     request = xQueueCreate(100, sizeof(struct request_msg));
@@ -78,6 +82,7 @@ void setUp(void)
     }
 }
 
+// Delete all workers
 void tearDown(void)
 {
     if (setup_pool) {

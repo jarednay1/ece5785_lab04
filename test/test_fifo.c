@@ -11,8 +11,6 @@
 #define TEST_RUNNER_PRIORITY      ( tskIDLE_PRIORITY + 2UL )
 #define TEST_RUNNER_STACK_SIZE configMINIMAL_STACK_SIZE
 
-// #define THREAD_COUNT 4
-
 int setup_pool;
 
 TaskHandle_t supervisor_thread;
@@ -20,36 +18,6 @@ TaskHandle_t worker_threads[THREAD_COUNT];
 struct task_args worker_args[THREAD_COUNT];
 QueueHandle_t request;
 QueueHandle_t response;
-
-// void setUp(void)
-// {
-//     request = xQueueCreate(100, sizeof(struct request_msg));
-//     response = xQueueCreate(100, sizeof(struct request_msg));
-
-//     if (setup_pool) {
-//         for (int t = 0; t < THREAD_COUNT; t++) {
-//             struct task_args arg = {request, response, t};
-//             worker_args[t] = arg;
-//             xTaskCreate(handler_task,
-//                         "worker",
-//                         TEST_TASK_STACK_SIZE,
-//                         (void *)(worker_args + t),
-//                         TEST_TASK_PRIORITY,
-//                         worker_threads + t);
-//         }
-//     }
-// }
-
-// void tearDown(void)
-// {
-//     if (setup_pool) {
-//         for (int t = 0; t < THREAD_COUNT; t++) {
-//             vTaskDelete(worker_threads[t]);
-//         }
-//     }
-//     vQueueDelete(request);
-//     vQueueDelete(response);
-// }
 
 void test_full(void)
 {
@@ -122,6 +90,7 @@ int main (void)
 {
     stdio_init_all();
     hard_assert(cyw43_arch_init() == PICO_OK);
+    sleep_ms(10000);
     printf("Launching runner\n");
     xTaskCreate(runner_thread, "TestRunner",
                 TEST_RUNNER_STACK_SIZE, NULL, TEST_RUNNER_PRIORITY, NULL);

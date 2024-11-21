@@ -31,8 +31,8 @@ int main( void )
     //              MASTER_TASK_PRIORITY, &signal_master);
 
     // -----This runs fifo------
-    xTaskCreate(fifo_master_task, "FifoMasterTask", MASTER_TASK_STACK_SIZE, NULL,
-                 MASTER_TASK_PRIORITY, &fifo_master);
+    // xTaskCreate(fifo_master_task, "FifoMasterTask", MASTER_TASK_STACK_SIZE, NULL,
+    //              MASTER_TASK_PRIORITY, &fifo_master);
 
     vTaskStartScheduler();
     run_task();

@@ -25,10 +25,10 @@ struct task_args
 
 extern int setup_pool;
 
-// extern TaskHandle_t worker_threads[THREAD_COUNT];
-// extern struct task_args worker_args[THREAD_COUNT];
-// extern QueueHandle_t request;
-// extern QueueHandle_t response;
+extern TaskHandle_t worker_threads[THREAD_COUNT];
+extern struct task_args worker_args[THREAD_COUNT];
+extern QueueHandle_t request;
+extern QueueHandle_t response;
 
 void fifo_master_task(void *args);
 void handler_task(void *vargs);
