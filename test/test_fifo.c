@@ -11,7 +11,7 @@
 #define TEST_RUNNER_PRIORITY      ( tskIDLE_PRIORITY + 2UL )
 #define TEST_RUNNER_STACK_SIZE configMINIMAL_STACK_SIZE
 
-#define THREAD_COUNT 4
+// #define THREAD_COUNT 4
 
 int setup_pool;
 
@@ -21,35 +21,35 @@ struct task_args worker_args[THREAD_COUNT];
 QueueHandle_t request;
 QueueHandle_t response;
 
-void setUp(void)
-{
-    request = xQueueCreate(100, sizeof(struct request_msg));
-    response = xQueueCreate(100, sizeof(struct request_msg));
+// void setUp(void)
+// {
+//     request = xQueueCreate(100, sizeof(struct request_msg));
+//     response = xQueueCreate(100, sizeof(struct request_msg));
 
-    if (setup_pool) {
-        for (int t = 0; t < THREAD_COUNT; t++) {
-            struct task_args arg = {request, response, t};
-            worker_args[t] = arg;
-            xTaskCreate(handler_task,
-                        "worker",
-                        TEST_TASK_STACK_SIZE,
-                        (void *)(worker_args + t),
-                        TEST_TASK_PRIORITY,
-                        worker_threads + t);
-        }
-    }
-}
+//     if (setup_pool) {
+//         for (int t = 0; t < THREAD_COUNT; t++) {
+//             struct task_args arg = {request, response, t};
+//             worker_args[t] = arg;
+//             xTaskCreate(handler_task,
+//                         "worker",
+//                         TEST_TASK_STACK_SIZE,
+//                         (void *)(worker_args + t),
+//                         TEST_TASK_PRIORITY,
+//                         worker_threads + t);
+//         }
+//     }
+// }
 
-void tearDown(void)
-{
-    if (setup_pool) {
-        for (int t = 0; t < THREAD_COUNT; t++) {
-            vTaskDelete(worker_threads[t]);
-        }
-    }
-    vQueueDelete(request);
-    vQueueDelete(response);
-}
+// void tearDown(void)
+// {
+//     if (setup_pool) {
+//         for (int t = 0; t < THREAD_COUNT; t++) {
+//             vTaskDelete(worker_threads[t]);
+//         }
+//     }
+//     vQueueDelete(request);
+//     vQueueDelete(response);
+// }
 
 void test_full(void)
 {

@@ -2,6 +2,7 @@
 add_executable(lab04
     main.c
     signaling.c
+    fifo.c
     )
 
 pico_set_program_name(lab04 "test")

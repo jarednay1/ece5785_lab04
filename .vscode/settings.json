@@ -41,6 +41,10 @@
         "stdlib.h": "c",
         "freertos.h": "c",
         "stdio.h": "c",
-        "fifo.h": "c"
+        "fifo.h": "c",
+        "queue.h": "c",
+        "cyw43_arch.h": "c",
+        "signaling.h": "c",
+        "unity.h": "c"
     }
 }
