@@ -1,10 +1,8 @@
-# Renode setup
-The Raspberry Pico needs configuration files for Renode to work properly.
+# Lab 4
+In this lab we explore using semaphores and queues to send data to other threads. Small note you will need to comment out code for whichever task you want to run with just one worker thread or a pool.
 
-* On MacOS, the installation location is `/Applications/Renode.app/Contents/MacOs`
-* On Linux, the location for Debian, Fedora, and Arch is `/opt/renode`
-* On Windows, the location is `C://Program Files/Renode`
+## ACtivity 1
+Worker thread returns input + 5.
 
-To add the Pico configuration files:
-1. Copy `rp2040_spinlock.py` and `rp2040_divider.py` to the `scripts/pydev` directory of your Renode installation.
-1. Copy `rpi_pico_rp2040_w.repl` to the `platforms/cpus` directory.
+## Activity 2
+Worker thread returns input + 5.
