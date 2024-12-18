@@ -27,8 +27,8 @@ int main( void )
     hard_assert(cyw43_arch_init() == PICO_OK);
 
     // -----This runs signaling-----
-    // xTaskCreate(master_task, "MasterTask", MASTER_TASK_STACK_SIZE, NULL,
-    //              MASTER_TASK_PRIORITY, &signal_master);
+    xTaskCreate(master_task, "MasterTask", MASTER_TASK_STACK_SIZE, NULL,
+                 MASTER_TASK_PRIORITY, &signal_master);
 
     // -----This runs fifo------
     // xTaskCreate(fifo_master_task, "FifoMasterTask", MASTER_TASK_STACK_SIZE, NULL,
